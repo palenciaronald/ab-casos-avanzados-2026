@@ -1,0 +1,25 @@
+# Laboratorio de Casos Avanzados 2026 — stack técnico
+# Python 3.x, todo corre en Jupyter/Colab sin GPU
+
+# Núcleo de datos y ML
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+scipy>=1.10
+
+# Visualización
+matplotlib>=3.7
+seaborn>=0.12
+
+# Notebooks
+jupyter>=1.0
+ipykernel>=6.0
+
+# NLP (Tema 4 — sentimientos)
+nltk>=3.8
+
+# Diagnóstico de regresión (VIF, supuestos — Tema 3)
+statsmodels>=0.14
+
+# Descarga de datasets desde Kaggle
+kaggle>=1.6

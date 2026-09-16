@@ -1,0 +1,32 @@
+# Datos descargados de Kaggle — NO versionar (se bajan con scripts/download_data.sh)
+data/**/*.csv
+data/**/*.zip
+data/**/*.xlsx
+data/**/*.json
+!data/**/.gitkeep
+
+# Credenciales de Kaggle — NUNCA versionar
+kaggle.json
+.kaggle/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Notebooks: salidas pesadas (opcional, se conservan .ipynb)
+# *.ipynb
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
