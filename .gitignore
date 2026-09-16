@@ -23,6 +23,10 @@ __pycache__/
 # Notebooks: salidas pesadas (opcional, se conservan .ipynb)
 # *.ipynb
 
+# PPTs: los .md son la fuente; el HTML/PDF se genera con Marp (no versionar)
+ppts/**/*.html
+ppts/**/*.pdf
+
 # Sistema operativo
 .DS_Store
 Thumbs.db
