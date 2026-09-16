@@ -24,23 +24,43 @@ como entrega).
 │   ├── 03-regresion/
 │   └── 04-nlp/
 ├── notebooks/            # notebooks demo (viernes) y plantilla (sábado)
+│   ├── 01-clasificacion/ #   demo German Credit + plantilla Credit Score
+│   ├── 02-clusterizacion/#   demo Mall Customers + plantilla Credit Card
+│   ├── 03-regresion/     #   demo Financial Statements + plantilla Taiwan
+│   └── 04-nlp/           #   demo PhraseBank + plantilla Financial Sentiment
+├── ppts/                 # presentaciones de teoría (~1h por viernes, Marp/ISL)
 │   ├── 01-clasificacion/
 │   ├── 02-clusterizacion/
 │   ├── 03-regresion/
-│   └── 04-nlp/
-├── ppts/                 # presentaciones de teoría (~1h por viernes)
-│   ├── 01-clasificacion/
-│   ├── 02-clusterizacion/
-│   ├── 03-regresion/
-│   └── 04-nlp/
+│   ├── 04-nlp/
+│   └── README.md         #   cómo renderizar las PPTs
 ├── scripts/
 │   └── download_data.sh  # descarga los 8 datasets vía Kaggle API
 ├── requirements.txt
+├── data/README.md        # resumen de las 8 bases
 └── README.md
 ```
 
 Los `.md` de la raíz (`00-curso-general.md` y `01`–`04`) son el diseño
 pedagógico de referencia de cada tema.
+
+## Contenido del curso
+
+Cada tema incluye un **notebook demo** (resuelto, ejecutado en vivo el viernes),
+una **plantilla** (con secciones `# TODO:` que el estudiante completa el sábado)
+y una **PPT de teoría** (~1 h, basada en *An Introduction to Statistical
+Learning*).
+
+| FDS | Tema | Demo (viernes) | Plantilla (sábado) | Teoría (PPT) |
+|-----|------|----------------|--------------------|--------------|
+| 1 | Clasificación | `demo_viernes_german_credit.ipynb` | `plantilla_sabado_credit_score.ipynb` | `teoria_clasificacion.md` |
+| 1 | Clusterización | `demo_viernes_mall_customers.ipynb` | `plantilla_sabado_credit_card.ipynb` | `teoria_clusterizacion.md` |
+| 2 | Regresión | `demo_viernes_financial_statements.ipynb` | `plantilla_sabado_taiwan_bankruptcy.ipynb` | `teoria_regresion.md` |
+| 3 | NLP | `demo_viernes_financial_phrasebank.ipynb` | `plantilla_sabado_financial_sentiment.ipynb` | `teoria_nlp_sentimientos.md` |
+
+Los demos están **ejecutados y verificados** (con gráficos incrustados). Las
+plantillas tienen las secciones 1–2 resueltas como ejemplo y el resto en `# TODO:`.
+Ver `ppts/README.md` para renderizar las presentaciones.
 
 ## Setup
 
@@ -53,8 +73,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # 3. NLP: recursos de NLTK (solo Tema 4)
-python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt'); nltk.download('wordnet')"
+#    En macOS puede fallar por certificados SSL; el workaround va incluido:
+python -c "import ssl, nltk; ssl._create_default_https_context = ssl._create_unverified_context; [nltk.download(r, quiet=True) for r in ['stopwords','wordnet','omw-1.4','punkt','punkt_tab']]"
 ```
+
+Los notebooks del Tema 4 ya incluyen ese workaround SSL en su primera celda, así
+que también funcionan si no ejecutas el comando anterior.
 
 ## Descarga de datasets
 
@@ -80,6 +104,17 @@ Requiere credenciales de Kaggle:
 Entra a cada dataset de la tabla (logueado en Kaggle), dale **Download** y
 ubica los CSV en la carpeta correspondiente de `data/<tema>/`. Las rutas
 relativas de los notebooks esperan los archivos ahí.
+
+## Cómo ejecutar los notebooks
+
+```bash
+source .venv/bin/activate
+jupyter notebook          # o: jupyter lab
+```
+
+Abre el notebook del tema y, en la **primera celda**, reemplaza
+`cedula = ...` por tu número de cédula antes de ejecutar (ver convención abajo).
+Los demos ya vienen ejecutados; las plantillas se completan celda por celda.
 
 ## Convención de los notebooks
 
