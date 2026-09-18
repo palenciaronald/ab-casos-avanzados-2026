@@ -1,6 +1,7 @@
-# Presentaciones de teoría (~1 h por viernes)
+# Presentaciones de teoría (~2 h por viernes)
 
-Cada tema tiene una PPT de **repaso conceptual** para la primera hora del
+Cada tema tiene una PPT de teoría **desde cero** (audiencia sin Machine Learning
+previo) para la primera parte del
 viernes, **basada en el libro *An Introduction to Statistical Learning* (ISL)**
 (James, Witten, Hastie & Tibshirani), con referencias a los capítulos.
 

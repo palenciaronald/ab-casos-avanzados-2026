@@ -18,7 +18,7 @@ como entrega).
 
 ```
 .
-├── data/                 # datasets (NO versionados — se descargan)
+├── data/                 # los 8 datasets (versionados; ~43 MB)
 │   ├── 01-clasificacion/
 │   ├── 02-clusterizacion/
 │   ├── 03-regresion/
@@ -28,7 +28,7 @@ como entrega).
 │   ├── 02-clusterizacion/#   demo Mall Customers + plantilla Credit Card
 │   ├── 03-regresion/     #   demo Financial Statements + plantilla Taiwan
 │   └── 04-nlp/           #   demo PhraseBank + plantilla Financial Sentiment
-├── ppts/                 # presentaciones de teoría (~1h por viernes, Marp/ISL)
+├── ppts/                 # presentaciones de teoría (~2h por viernes, Marp/ISL, desde cero)
 │   ├── 01-clasificacion/
 │   ├── 02-clusterizacion/
 │   ├── 03-regresion/
@@ -48,7 +48,7 @@ pedagógico de referencia de cada tema.
 
 Cada tema incluye un **notebook demo** (resuelto, ejecutado en vivo el viernes),
 una **plantilla** (con secciones `# TODO:` que el estudiante completa el sábado)
-y una **PPT de teoría** (~1 h, basada en *An Introduction to Statistical
+y una **PPT de teoría** (~2 h, desde cero, basada en *An Introduction to Statistical
 Learning*).
 
 | FDS | Tema | Demo (viernes) | Plantilla (sábado) | Teoría (PPT) |
@@ -80,9 +80,14 @@ python -c "import ssl, nltk; ssl._create_default_https_context = ssl._create_unv
 Los notebooks del Tema 4 ya incluyen ese workaround SSL en su primera celda, así
 que también funcionan si no ejecutas el comando anterior.
 
-## Descarga de datasets
+## Datasets
 
-Los datasets vienen de Kaggle y no se pueden bajar por link directo.
+Los 8 datasets **ya vienen incluidos en este repo** (carpeta `data/`, ~43 MB),
+así que al clonar tienes todo listo para ejecutar los notebooks. Ver
+`data/README.md` para el detalle de cada base.
+
+Si necesitas **regenerarlos** desde el origen (vienen de Kaggle, sin link
+directo), tienes dos opciones:
 
 ### Opción A — Kaggle API (automático)
 

@@ -1,9 +1,6 @@
-# Datos descargados de Kaggle — NO versionar (se bajan con scripts/download_data.sh)
-data/**/*.csv
-data/**/*.zip
-data/**/*.xlsx
-data/**/*.json
-!data/**/.gitkeep
+# Datos: se versionan en este repo para que al clonar esté todo disponible
+# (alternativa: bajarlos con scripts/download_data.sh desde Kaggle)
+# Nota: revisa las licencias de Kaggle antes de redistribuir en un repo público.
 
 # Credenciales de Kaggle — NUNCA versionar
 kaggle.json

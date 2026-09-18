@@ -1,10 +1,10 @@
 # Datasets del curso — resumen por tema
 
-> **Importante:** los archivos de datos **no se versionan** en el repo (ver
-> `.gitignore`). Son datasets de Kaggle (~43 MB). Descárgalos con
-> `bash scripts/download_data.sh` (requiere `kaggle.json`) o manualmente desde
-> los enlaces de cada tema. Este documento describe qué debe quedar en cada
-> carpeta y para qué sirve.
+> **Nota:** los 8 datasets (~43 MB) **están versionados en este repo**, así que
+> al clonar ya tienes todo listo para ejecutar los notebooks. Alternativamente,
+> puedes regenerarlos con `bash scripts/download_data.sh` (requiere `kaggle.json`)
+> o descargarlos manualmente desde los enlaces de cada tema. Son datasets de
+> Kaggle: revisa sus licencias antes de redistribuirlos.
 
 ## Cómo funcionan las "dos bases por tema" (no son train/test)
 

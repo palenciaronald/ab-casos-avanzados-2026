@@ -3,7 +3,7 @@
 
 ## 1. Contexto
 
-Curso para la **Maestría en Ingeniería Analítica** de una universidad externa (coordina Leandro Ariza). Audiencia con base sólida previa: ya vieron Python, Machine Learning y estadística — el curso es 100% aplicado, sin necesidad de introducir fundamentos desde cero.
+Curso para la **Maestría en Ingeniería Analítica** de una universidad externa (coordina Leandro Ariza). La audiencia **no tiene formación previa en Inteligencia Artificial ni Machine Learning**, por lo que la teoría se dicta **desde cero**: primero la intuición (con analogías) y luego la formalización. El curso combina esos fundamentos con un enfoque 100% aplicado.
 
 **Intensidad:** 24 horas totales, repartidas en 3 fines de semana (viernes + sábado cada uno).
 
@@ -17,7 +17,7 @@ Curso para la **Maestría en Ingeniería Analítica** de una universidad externa
 ## 2. Dinámica de cada fin de semana
 
 **Viernes — el instructor ejecuta:**
-1. ~1 hora de teoría (PPT de repaso conceptual, nivel especialización/maestría — no fundamentos desde cero, sino refresco enfocado en lo que se usará)
+1. ~2 horas de teoría (PPT desde cero, para audiencia sin ML previo — intuición con analogías primero, luego la formalización; basada en *An Introduction to Statistical Learning*)
 2. Resto de la sesión: práctica — el instructor desarrolla el caso de negocio completo en vivo, de principio a fin, en un notebook demo, explicando decisiones en cada paso
 
 **Sábado — el estudiante ejecuta:**
