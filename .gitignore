@@ -32,3 +32,10 @@ Thumbs.db
 # Editores
 .vscode/
 .idea/
+
+# Soluciones del instructor — NUNCA versionar (el repo lo clonan los estudiantes)
+soluciones-instructor/
+
+# Material con copyright y accesos directos locales
+literatura/
+*.lnk

@@ -1,6 +1,6 @@
 # Laboratorio de Casos Avanzados — Maestría en Ingeniería Analítica (2026)
 
-Curso 100% aplicado (24 h, 3 fines de semana). Cada tema tiene dos notebooks:
+Curso 100% aplicado (32 h, 4 fines de semana). Cada tema tiene dos notebooks:
 un **demo del viernes** (resuelto, ejecutado en vivo por el instructor) y una
 **plantilla del sábado** (con secciones en blanco que el estudiante completa
 como entrega).
@@ -10,9 +10,9 @@ como entrega).
 | FDS | Fechas | Tema | Demo (viernes) | Ejercicio (sábado) |
 |-----|--------|------|----------------|--------------------|
 | 1 | 18–19 sep | Clasificación (score de riesgo) | German Credit Data | Credit Score Classification |
-| 1 | 18–19 sep | Clusterización (segmentación) | Mall Customer Segmentation | Credit Card Clustering |
-| 2 | 25–26 sep | Regresión (liquidez) | Financial Statements 2009-2023 | Company Bankruptcy (Taiwan) |
-| 3 | 2–3 oct | NLP (sentimientos) | Financial PhraseBank | Financial Sentiment (FiQA+PB) |
+| 2 | 25–26 sep | Clusterización (segmentación) | Mall Customer Segmentation | Credit Card Clustering |
+| 3 | 2–3 oct | Regresión (liquidez) | Financial Statements 2009-2023 | Company Bankruptcy (Taiwan) |
+| 4 | 9–10 oct | NLP (sentimientos) | Financial PhraseBank | Financial Sentiment (FiQA+PB) |
 
 ## Estructura del repositorio
 

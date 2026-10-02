@@ -1,5 +1,5 @@
 # Tema 3: NLP — Análisis de Sentimientos
-## Fin de semana 3 (2–3 oct)
+## Fin de semana 4 (9–10 oct)
 
 ## 1. Caso de negocio
 

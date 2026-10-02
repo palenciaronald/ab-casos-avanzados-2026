@@ -1,5 +1,5 @@
 # Tema 1A: Clasificación — Score de Riesgo
-## Fin de semana 1 (18–19 sep) — se dicta junto con Clusterización
+## Fin de semana 1 (18–19 sep)
 
 ## 1. Caso de negocio
 

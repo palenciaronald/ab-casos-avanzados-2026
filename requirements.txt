@@ -21,5 +21,8 @@ nltk>=3.8
 # Diagnóstico de regresión (VIF, supuestos — Tema 3)
 statsmodels>=0.14
 
+# Gradient boosting (Tema 3 — regresión no lineal)
+xgboost>=2.0
+
 # Descarga de datasets desde Kaggle
 kaggle>=1.6

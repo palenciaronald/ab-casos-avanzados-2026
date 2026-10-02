@@ -5,14 +5,15 @@
 
 Curso para la **Maestría en Ingeniería Analítica** de una universidad externa (coordina Leandro Ariza). La audiencia **no tiene formación previa en Inteligencia Artificial ni Machine Learning**, por lo que la teoría se dicta **desde cero**: primero la intuición (con analogías) y luego la formalización. El curso combina esos fundamentos con un enfoque 100% aplicado.
 
-**Intensidad:** 24 horas totales, repartidas en 3 fines de semana (viernes + sábado cada uno).
+**Intensidad:** 32 horas totales, repartidas en 4 fines de semana (viernes + sábado cada uno).
 
 **Fechas:**
 | Fin de semana | Fechas | Tema(s) |
 |---|---|---|
-| 1 | 18–19 sep | Clasificación (Score de riesgo) + Clusterización (Segmentación de clientes) |
-| 2 | 25–26 sep | Regresión (Modelo de liquidez) |
-| 3 | 2–3 oct | NLP (Análisis de sentimientos) |
+| 1 | 18–19 sep | Clasificación (Score de riesgo) |
+| 2 | 25–26 sep | Clusterización (Segmentación de clientes) |
+| 3 | 2–3 oct | Regresión (Modelo de liquidez) |
+| 4 | 9–10 oct | NLP (Análisis de sentimientos) |
 
 ## 2. Dinámica de cada fin de semana
 
@@ -24,8 +25,6 @@ Curso para la **Maestría en Ingeniería Analítica** de una universidad externa
 1. 30–50 minutos: el instructor presenta el nuevo caso de negocio (variación del tema, mismo dominio pero distinto planteamiento/dataset)
 2. Resto de la sesión: el estudiante trabaja solo sobre una plantilla de notebook, con el instructor presente resolviendo dudas
 3. Idealmente el trabajo queda entregado el mismo sábado; si no alcanza, se puede entregar hasta el siguiente fin de semana
-
-**Excepción — Fin de semana 1 (dos temas):** el viernes se explican y ejecutan ambos casos (clasificación y clusterización); el sábado, tras la explicación del nuevo caso, el estudiante intenta completar ambas plantillas si el tiempo alcanza.
 
 ## 3. Personalización con semilla (anti-copia, sin duplicar datasets)
 
@@ -90,6 +89,7 @@ Cualquiera de las dos rutas deja los archivos en la estructura que los notebooks
 
 - Python 3.x, Jupyter Notebook
 - Librerías estándar: `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`
+- Regresión (Tema 3): `statsmodels` (VIF), `xgboost` (gradient boosting)
 - NLP: `nltk` o `spaCy` para preprocesamiento; `scikit-learn` (TF-IDF + clasificador clásico) como enfoque base — ver detalle en el .md de NLP
 - Sin dependencias de infraestructura pesada (todo debe correr en Google Colab o Jupyter local sin GPU)
 
