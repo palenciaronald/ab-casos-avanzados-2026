@@ -1,4 +1,4 @@
-# Tema 2: Regresión — Modelo de Liquidez
+# Tema 3: Regresión — Modelo de Liquidez
 ## Fin de semana 3 (2–3 oct)
 
 ## 1. Caso de negocio
@@ -53,11 +53,31 @@ apenas explican 5-7% de la varianza (R²), mientras que XGBoost explica ~76% —
 evidencia de que la relación entre estos indicadores y la liquidez no es lineal.
 Es el punto de teoría más fuerte del día: no asumir que lineal alcanza.
 
-## 5. Estructura de la plantilla (sábado)
+## 5. Estructura de la plantilla (sábado) — taller de ~4 h
 
-Misma estructura de 10 secciones que el demo, pero:
-- Secciones 1 y 2 resueltas como ejemplo (incluyendo la explicación de cómo se define el target de liquidez en este dataset)
-- Celda de semilla personal (`np.random.seed(cedula)`), usada en el muestreo del dataset y en el `random_state` del `train_test_split`
-- Secciones 3 a 9: instrucción en Markdown + celda de código en blanco con comentario guía
-- El estudiante entrena **los 6 modelos** (3 lineales + 3 no lineales), no solo el lineal
-- Sección 9 (conclusión): 6 preguntas abiertas en Markdown, incluyendo comparar qué modelo ganó y por qué, y si el resultado (36× más filas que la demo) cambia la ventaja de los árboles sobre lo lineal
+A diferencia de la demo, **el estudiante hace el EDA completo** (obligatorio) y de él salen las decisiones de limpieza. Solo la carga de datos y la semilla vienen resueltas.
+
+| # | Sección | Qué hace el estudiante |
+|---|---|---|
+| 2 | **EDA obligatorio** (2.1–2.9) | Calidad de datos; target (skew, p99); outliers del target y de los **predictores**; correlación **Pearson vs. Spearman**; pares casi duplicados; relación con `Bankrupt?`; detección de **fuga de información**; cuadro de hallazgos con decisiones |
+| 3 | Preparación y split | Aplica las decisiones del EDA; experimento **sin vs. con `Winsorizer`** (se entrega la clase) |
+| 4–5 | Baseline + lineales | `DummyRegressor`; Lineal, `RidgeCV`, `LassoCV` |
+| 6 | No lineales | Árbol, Random Forest, XGBoost |
+| 7 | Validación cruzada | 5-fold, media ± std del RMSE |
+| 8 | Tuning | `RandomizedSearchCV` sobre XGBoost |
+| 9 | Evaluación y errores | MAE/RMSE/R²/MAPE (MAPE solo con y>0), residuos, real vs. predicho, MAE por cuartil, top-10 errores |
+| 10 | VIF | VIF completo + eliminación iterativa (VIF<10) y comparación de R² |
+| 11 | Interpretación | Coeficientes, importancia por impureza e importancia por **permutación** |
+| 12 | Auditoría de fuga residual | Ablación por grupos de ratios relacionados |
+| 13 | Conclusión | 8 preguntas abiertas |
+
+**Hallazgos reales del dataset (verificados con la solución del instructor, semilla 1020304050):**
+- Target: media 4.7e5 vs. mediana 0.011; máximo 2.75e9; ~1% de filas sobre el p99 (0.0748).
+- ~21 de 94 predictores tienen valores > 1000 (la mayoría de ratios está en [0,1]). Sin tratarlos, la regresión lineal da **R² ≈ −4.8** (con otras semillas varía de −7 a −7e15); con `Winsorizer` (p1–p99) da **R² ≈ 0.91**.
+- Fuga de información: *Quick Ratio*, *Quick Assets/Current Liability* y *Cash/Current Liability* tienen Pearson ≈ 0 con el target pero **Spearman 0.67–0.88** (los extremos ocultan la relación); *Current Liability to Current Assets* tiene Spearman = −1.0. Con ellas XGBoost llega a R² 0.9995; sin ellas, 0.983.
+- Fuga residual: los ratios se calculan unos de otros; quitando grupos por nombre (Equity → Liabilit/Debt → Working/Current/Cash) el R² de XGBoost cae 0.983 → 0.974 → 0.936 → 0.692.
+- Lineal ≈ 0.91 vs. XGBoost ≈ 0.98: a diferencia de la demo (n=137), con ~5.700 filas los lineales **sí funcionan** una vez tratados los outliers; los árboles siguen ganando pero por menos margen.
+- VIF: sin quitar constantes ni casi-duplicadas aparecen `inf`/`NaN`; tras limpiar, 34 de 75 variables tienen VIF > 10 y quedan 55 al reducir.
+- Lasso: el target vale ~0.01, así que hay que usar `LassoCV` (un `alpha` fijo como 0.01 anula todos los coeficientes).
+
+La solución completa del instructor está en `soluciones-instructor/03-regresion/solucion_taiwan_bankruptcy.ipynb` (no versionada).
