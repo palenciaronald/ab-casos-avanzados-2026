@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hoja de Ruta de Aprendizaje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Concepto: mapa de ruta en tres fases; cada curso es una parada con su conexión al curso, recursos y un mini-proyecto con los datasets que ya conocen. */
+:root{
+  --bg:#f4f7f8; --surface:#ffffff; --ink:#13242c; --muted:#4d6470; --line:#d3dde2;
+  --accent:#0b7a75; --accent-soft:#dff2f0; --f1:#0b7a75; --f2:#2a5fb0; --f3:#7a4fa3;
+  --warn-bg:#fff4dc; --warn-ink:#5d4306;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1a20; --surface:#15262e; --ink:#e6eff2; --muted:#9bb1bb; --line:#2a404a;
+  --accent:#4cc9bf; --accent-soft:#16363a; --f1:#4cc9bf; --f2:#7fa8ee; --f3:#bb97e0;
+  --warn-bg:#3a2f12; --warn-ink:#f0d9a0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1a20; --surface:#15262e; --ink:#e6eff2; --muted:#9bb1bb; --line:#2a404a;
+  --accent:#4cc9bf; --accent-soft:#16363a; --f1:#4cc9bf; --f2:#7fa8ee; --f3:#bb97e0;
+  --warn-bg:#3a2f12; --warn-ink:#f0d9a0; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55;padding-inline:max(16px,4vw);padding-block:32px 64px}
+.wrap{max-width:1080px;margin-inline:auto}
+h1,h2,h3{text-wrap:balance;line-height:1.2;margin:0}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+header.top{display:flex;flex-direction:column;gap:14px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+header.top h1{font-size:clamp(28px,5vw,42px);font-weight:700;letter-spacing:-.01em}
+header.top p{margin:0;max-width:68ch;color:var(--muted);font-size:16px}
+
+.controls{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between;margin-block:20px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips .eyebrow{margin-right:4px}
+.chip{font:inherit;font-size:13px;font-weight:500;padding:6px 12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip:focus-visible,.check input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#06222a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#06222a}}
+.progress{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.bar{width:140px;height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.progress b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+.map{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:36px}
+.map h2{font-size:16px;margin-bottom:4px}
+.map p{margin:0 0 10px;color:var(--muted);font-size:13px}
+.map .scroll{overflow-x:auto}
+.map pre.mermaid{margin:0;text-align:center;min-width:640px}
+
+.phase{margin-top:44px}
+.phase-head{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;margin-bottom:16px}
+.phase-head .num{grid-row:1/3;font-family:var(--font-mono);font-size:13px;font-weight:500;color:#fff;padding:6px 10px;border-radius:6px;align-self:start}
+.phase.p1 .num{background:var(--f1)} .phase.p2 .num{background:var(--f2)} .phase.p3 .num{background:var(--f3)}
+:root[data-theme="dark"] .phase .num{color:#06141a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .phase .num{color:#06141a}}
+.phase-head h2{font-size:22px}
+.phase-head .goal{color:var(--muted);margin:0;max-width:70ch}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0;transition:opacity .2s}
+.phase.p1 .card{border-top:3px solid var(--f1)} .phase.p2 .card{border-top:3px solid var(--f2)} .phase.p3 .card{border-top:3px solid var(--f3)}
+.card.dim{opacity:.42}
+.card.done{background:var(--accent-soft)}
+.card h3{font-size:18px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.card h4{margin:0 0 3px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.card p{margin:0}
+.card ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.card li::marker{color:var(--muted)}
+.tag{font-family:var(--font-mono);font-size:11px;border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--muted);white-space:nowrap}
+.proj{background:var(--bg);border-radius:6px;padding:10px 12px;font-size:14px}
+.card footer{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:6px;border-top:1px dashed var(--line)}
+.check{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer}
+.check input{width:17px;height:17px;accent-color:var(--accent)}
+.req{font-size:12px;color:var(--muted)}
+
+.note{margin-top:48px;background:var(--warn-bg);color:var(--warn-ink);border-radius:8px;padding:14px 16px;font-size:14px}
+.empty{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){.phase-head{grid-template-columns:1fr}.phase-head .num{grid-row:auto}.bar{width:100px}}
+body{margin:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Casos Avanzados · Maestría en Ingeniería Analítica</span>
+  <h1>Hoja de ruta para seguir después del curso</h1>
+  <p>Viste clasificación, clusterización y regresión, con validación cruzada e hiperparámetros al final. Esta ruta ordena en tres fases lo que sigue: primero la base estadística que sostiene todo, luego las herramientas para llevar modelos a producción, y al final las especializaciones que mencionamos al cierre de la clase.</p>
+</header>
+
+<div class="controls">
+  <div class="chips" role="group" aria-label="Filtrar por perfil">
+    <span class="eyebrow">Mi perfil</span>
+    <button class="chip" data-perfil="todos" aria-pressed="true" type="button">Todos</button>
+    <button class="chip" data-perfil="riesgo" aria-pressed="false" type="button">Riesgo y crédito</button>
+    <button class="chip" data-perfil="ds" aria-pressed="false" type="button">Ciencia de datos</button>
+    <button class="chip" data-perfil="prod" aria-pressed="false" type="button">ML en producción</button>
+  </div>
+  <div class="progress" aria-live="polite"><span><b id="done">0</b> de <b id="total">11</b> vistos</span><span class="bar"><i id="barfill"></i></span></div>
+</div>
+
+<section class="map" aria-labelledby="map-h">
+  <h2 id="map-h">Mapa de dependencias</h2>
+  <p>Una flecha significa "conviene hacerlo antes". Lo que ya vimos en el curso es el punto de partida de todo.</p>
+  <div class="scroll"><pre class="mermaid">
+flowchart LR
+  CURSO(["Lo visto en el curso"]) --> ENS["Ensambles y SHAP"]
+  CURSO --> PROB["Probabilidad"]
+  PROB --> INF["Inferencia"]
+  INF --> TS["Series de tiempo"]
+  INF --> CAU["Causalidad"]
+  CURSO --> MLF["MLflow"]
+  MLF --> DBX["Databricks"]
+  MLF --> OPS["MLOps"]
+  CURSO --> DL["Deep learning"]
+  DL --> NLP["NLP y Transformers"]
+  DL --> RL["Refuerzo (RL)"]
+  PROB --> RL
+  </pre></div>
+</section>
+
+<!-- ============ FASE 1 ============ -->
+<section class="phase p1" id="fase1">
+  <div class="phase-head">
+    <span class="num">FASE 1</span>
+    <h2>Cimientos: estadística y mejores modelos tabulares</h2>
+    <p class="goal">Primeros 3 a 4 meses. Entender por qué funcionan las métricas y pruebas que ya usaste, y dominar mejor lo que más se usa en datos tabulares.</p>
+  </div>
+  <div class="grid">
+
+    <article class="card" data-id="prob" data-perfiles="riesgo ds">
+      <h3>Probabilidad</h3>
+      <div class="meta"><span>Carga aprox.: un semestre, 5 h/semana</span></div>
+      <div><h4>Conexión con el curso</h4><p>La regresión logística entrega probabilidades; ROC y AUC, el sesgo y la varianza, y DBSCAN (densidad) se apoyan en distribuciones, esperanza y varianza.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://stat110.net/" target="_blank" rel="noopener">Harvard Stat 110 (Joe Blitzstein)</a> <span class="tag">videos</span> <span class="tag">gratis</span></li>
+        <li><em>Introduction to Probability</em>, Blitzstein y Hwang <span class="tag">libro</span></li>
+        <li><a href="https://es.khanacademy.org/math/statistics-probability" target="_blank" rel="noopener">Khan Academy: probabilidad y estadística</a> <span class="tag">repaso ligero</span></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Simula con numpy la distribución del R² de test de tu regresión al cambiar la semilla 1.000 veces y describe su forma.</div>
+      <footer><label class="check"><input type="checkbox" data-done="prob"> Visto</label><span class="req">Requiere: nada</span></footer>
+    </article>
+
+    <article class="card" data-id="inf" data-perfiles="riesgo ds">
+      <h3>Inferencia estadística</h3>
+      <div class="meta"><span>Carga aprox.: 8 a 12 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>Responde "¿esta diferencia entre dos modelos es real o suerte?", justifica intervalos de confianza, p-valores de coeficientes y bootstrap (ISL cap. 3 y 5).</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><em>All of Statistics</em>, Larry Wasserman <span class="tag">libro</span></li>
+        <li><em>Statistical Inference</em>, Casella y Berger <span class="tag">libro, nivel avanzado</span></li>
+        <li>Coursera: <em>Inferential Statistics</em> (Duke) <span class="tag">curso</span></li>
+        <li><a href="https://xcelab.net/rm/" target="_blank" rel="noopener">Statistical Rethinking (McElreath)</a> <span class="tag">enfoque bayesiano</span> <span class="tag">gratis</span></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Con el dataset de Taiwan, calcula un intervalo de confianza bootstrap del RMSE de tu mejor modelo y compáralo con el del baseline.</div>
+      <footer><label class="check"><input type="checkbox" data-done="inf"> Visto</label><span class="req">Requiere: Probabilidad</span></footer>
+    </article>
+
+    <article class="card" data-id="ens" data-perfiles="riesgo ds prod">
+      <h3>Ensambles y explicabilidad (SHAP)</h3>
+      <div class="meta"><span>Carga aprox.: 3 a 5 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>Random Forest y XGBoost ya son ensambles. Aquí sigues con LightGBM, CatBoost y <em>stacking</em>, y aprendes a explicar cada predicción, algo que exige la regulación en crédito.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">Kaggle Learn: Intermediate Machine Learning</a> <span class="tag">gratis</span></li>
+        <li><a href="https://christophm.github.io/interpretable-ml-book/" target="_blank" rel="noopener"><em>Interpretable Machine Learning</em> (Molnar)</a> <span class="tag">libro</span> <span class="tag">gratis</span></li>
+        <li><a href="https://shap.readthedocs.io/" target="_blank" rel="noopener">Documentación de SHAP</a> y <a href="https://lightgbm.readthedocs.io/" target="_blank" rel="noopener">LightGBM</a></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Reentrena el score de crédito con LightGBM y genera un gráfico SHAP que explique por qué se rechaza a un cliente concreto.</div>
+      <footer><label class="check"><input type="checkbox" data-done="ens"> Visto</label><span class="req">Requiere: lo visto en el curso</span></footer>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FASE 2 ============ -->
+<section class="phase p2" id="fase2">
+  <div class="phase-head">
+    <span class="num">FASE 2</span>
+    <h2>Del notebook a producción</h2>
+    <p class="goal">Meses 4 a 8. Registrar experimentos, trabajar sobre una plataforma de datos y poner modelos a funcionar en el mundo real.</p>
+  </div>
+  <div class="grid">
+
+    <article class="card" data-id="mlflow" data-perfiles="ds prod riesgo">
+      <h3>MLflow</h3>
+      <div class="meta"><span>Carga aprox.: 1 a 2 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>En el taller de regresión probaste 7 modelos y varios hiperparámetros. MLflow registra parámetros, métricas y modelos de cada corrida para compararlas y reproducirlas.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://mlflow.org/docs/latest/" target="_blank" rel="noopener">Documentación oficial y tutoriales de MLflow</a> <span class="tag">gratis</span></li>
+        <li><a href="https://github.com/DataTalksClub/mlops-zoomcamp" target="_blank" rel="noopener">MLOps Zoomcamp (DataTalksClub)</a>, módulo de experiment tracking <span class="tag">gratis</span></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Instrumenta el notebook de regresión: un <code>run</code> por modelo con sus métricas, y compara las corridas en <code>mlflow ui</code>.</div>
+      <footer><label class="check"><input type="checkbox" data-done="mlflow"> Visto</label><span class="req">Requiere: lo visto en el curso</span></footer>
+    </article>
+
+    <article class="card" data-id="dbx" data-perfiles="ds prod">
+      <h3>Databricks</h3>
+      <div class="meta"><span>Carga aprox.: 4 a 6 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>Es una plataforma donde lo que hiciste en Jupyter corre sobre datos grandes con Spark, y MLflow viene integrado. Muy usada en bancos y grandes empresas.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://www.databricks.com/learn/free-edition" target="_blank" rel="noopener">Databricks Free Edition</a> para practicar <span class="tag">gratis</span></li>
+        <li><a href="https://academy.databricks.com/" target="_blank" rel="noopener">Databricks Academy</a>: rutas de autoestudio (fundamentos del Lakehouse, ML) <span class="tag">verifica el catálogo vigente</span></li>
+        <li>Certificaciones opcionales: <em>Machine Learning Associate</em> o <em>Data Engineer Associate</em></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Sube <code>taiwan_bankruptcy.csv</code> a una tabla, repite el pipeline con PySpark/MLlib o scikit-learn y registra el resultado con MLflow.</div>
+      <footer><label class="check"><input type="checkbox" data-done="dbx"> Visto</label><span class="req">Requiere: MLflow, SQL básico</span></footer>
+    </article>
+
+    <article class="card" data-id="ops" data-perfiles="prod">
+      <h3>MLOps y despliegue</h3>
+      <div class="meta"><span>Carga aprox.: 6 a 8 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>Un modelo no está terminado hasta que se puede reproducir, desplegar y monitorear. Cubre empaquetado, API, <em>data drift</em> y reentrenamiento.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://github.com/DataTalksClub/mlops-zoomcamp" target="_blank" rel="noopener">MLOps Zoomcamp</a> completo <span class="tag">gratis</span></li>
+        <li><em>Designing Machine Learning Systems</em>, Chip Huyen <span class="tag">libro</span></li>
+        <li>Coursera: <em>Machine Learning Engineering for Production (MLOps)</em>, DeepLearning.AI <span class="tag">especialización</span></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Empaqueta el mejor modelo de liquidez en una API con FastAPI dentro de un contenedor Docker y registra su versión en MLflow.</div>
+      <footer><label class="check"><input type="checkbox" data-done="ops"> Visto</label><span class="req">Requiere: MLflow</span></footer>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FASE 3 ============ -->
+<section class="phase p3" id="fase3">
+  <div class="phase-head">
+    <span class="num">FASE 3</span>
+    <h2>Especializaciones</h2>
+    <p class="goal">Desde el mes 8. Elige según tu perfil: no hace falta recorrerlas todas. Son los temas que dejamos fuera en clase.</p>
+  </div>
+  <div class="grid">
+
+    <article class="card" data-id="ts" data-perfiles="riesgo ds">
+      <h3>Series de tiempo</h3>
+      <div class="meta"><span>Carga aprox.: 6 a 10 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>El dataset de estados financieros es una serie por año y el split aleatorio es optimista cuando hay tiempo de por medio. Aquí aprendes validación fuera de tiempo, ARIMA y modelos modernos de pronóstico.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://otexts.com/fpp3/" target="_blank" rel="noopener"><em>Forecasting: Principles and Practice</em> (Hyndman y Athanasopoulos)</a> <span class="tag">libro</span> <span class="tag">gratis</span></li>
+        <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">Kaggle Learn: Time Series</a> <span class="tag">gratis</span></li>
+        <li>Librerías en Python: <code>statsforecast</code>, <code>sktime</code>, <code>darts</code></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Con <code>financial_statements.csv</code>, entrena hasta 2020 y valida con 2021–2023 (fuera de tiempo). Compara ese error con el del split aleatorio.</div>
+      <footer><label class="check"><input type="checkbox" data-done="ts"> Visto</label><span class="req">Requiere: Inferencia</span></footer>
+    </article>
+
+    <article class="card" data-id="dl" data-perfiles="ds">
+      <h3>Deep learning</h3>
+      <div class="meta"><span>Carga aprox.: 8 a 12 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>Retoma el sobreajuste, la regularización y la validación cruzada, ahora con redes neuronales. Brilla en texto, imágenes y series; en tablas no siempre supera a XGBoost.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://course.fast.ai/" target="_blank" rel="noopener">fast.ai: Practical Deep Learning for Coders</a> <span class="tag">gratis</span></li>
+        <li><a href="https://d2l.ai/" target="_blank" rel="noopener">Dive into Deep Learning</a> <span class="tag">libro</span> <span class="tag">gratis</span></li>
+        <li>Coursera: <em>Deep Learning Specialization</em>, DeepLearning.AI</li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Entrena una red MLP (PyTorch) sobre el score de crédito y compárala con tu mejor XGBoost usando validación cruzada.</div>
+      <footer><label class="check"><input type="checkbox" data-done="dl"> Visto</label><span class="req">Requiere: lo visto en el curso, Python</span></footer>
+    </article>
+
+    <article class="card" data-id="nlp" data-perfiles="ds riesgo">
+      <h3>NLP y Transformers</h3>
+      <div class="meta"><span>Carga aprox.: 4 a 8 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>Es la continuación natural del fin de semana de NLP: pasar de TF-IDF y modelos clásicos a <em>embeddings</em> y modelos preentrenados, como FinBERT para sentimiento financiero.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://huggingface.co/learn" target="_blank" rel="noopener">Hugging Face Learn: curso de LLM y de NLP</a> <span class="tag">gratis</span></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Aplica un modelo FinBERT al dataset Financial PhraseBank y compáralo con tu TF-IDF + regresión logística.</div>
+      <footer><label class="check"><input type="checkbox" data-done="nlp"> Visto</label><span class="req">Requiere: Deep learning</span></footer>
+    </article>
+
+    <article class="card" data-id="rl" data-perfiles="ds">
+      <h3>Aprendizaje por refuerzo (RL)</h3>
+      <div class="meta"><span>Carga aprox.: 10 a 14 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>Es un tercer tipo de aprendizaje, distinto al supervisado y al no supervisado: un agente aprende actuando y recibiendo recompensas. En finanzas se usa en ejecución de órdenes y gestión de portafolios.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="http://incompleteideas.net/book/the-book-2nd.html" target="_blank" rel="noopener"><em>Reinforcement Learning: An Introduction</em> (Sutton y Barto)</a> <span class="tag">libro</span> <span class="tag">gratis</span></li>
+        <li>Curso de RL de David Silver (UCL / DeepMind) <span class="tag">videos</span></li>
+        <li><a href="https://huggingface.co/learn" target="_blank" rel="noopener">Hugging Face: Deep RL Course</a> <span class="tag">gratis</span></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Implementa Q-learning en un entorno sencillo (por ejemplo, <code>FrozenLake</code> de Gymnasium) antes de pasar a casos financieros.</div>
+      <footer><label class="check"><input type="checkbox" data-done="rl"> Visto</label><span class="req">Requiere: Probabilidad, Deep learning</span></footer>
+    </article>
+
+    <article class="card" data-id="cau" data-perfiles="riesgo ds">
+      <h3>Inferencia causal</h3>
+      <div class="meta"><span>Carga aprox.: 6 a 8 semanas</span></div>
+      <div><h4>Conexión con el curso</h4><p>Predecir no es explicar. Un modelo puede predecir bien la liquidez sin decirte qué decisión la mejora. La causalidad estudia el efecto de una intervención.</p></div>
+      <div><h4>Recursos</h4><ul>
+        <li><a href="https://matheusfacure.github.io/python-causality-handbook/landing-page.html" target="_blank" rel="noopener"><em>Causal Inference for the Brave and True</em> (Facure)</a> <span class="tag">gratis</span></li>
+        <li><a href="https://theeffectbook.net/" target="_blank" rel="noopener"><em>The Effect</em> (Huntington-Klein)</a> <span class="tag">libro</span> <span class="tag">gratis</span></li>
+      </ul></div>
+      <div class="proj"><h4>Mini-proyecto</h4>Escribe qué variables de Financial Statements podrías intervenir de verdad, y qué confusores harían engañosa su relación con el Current Ratio.</div>
+      <footer><label class="check"><input type="checkbox" data-done="cau"> Visto</label><span class="req">Requiere: Inferencia</span></footer>
+    </article>
+  </div>
+</section>
+
+<p class="note"><strong>Antes de inscribirte:</strong> verifica disponibilidad, precio y versión vigente de cada recurso. Los cursos y plataformas cambian de catálogo con frecuencia, y las cargas de trabajo son estimaciones para alguien que trabaja y estudia a la vez. "Gratis" indica material abierto en el momento de armar esta ruta.</p>
+</div>
+
+<script>
+(function(){
+  var KEY="hoja-ruta-casos-avanzados";
+  var state={done:{},perfil:"todos"};
+  try{var raw=localStorage.getItem(KEY); if(raw){var s=JSON.parse(raw); if(s&&s.done) state.done=s.done; if(s&&s.perfil) state.perfil=s.perfil;}}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  var cards=[].slice.call(document.querySelectorAll(".card"));
+  var boxes=[].slice.call(document.querySelectorAll("input[data-done]"));
+  var chips=[].slice.call(document.querySelectorAll(".chip"));
+  document.getElementById("total").textContent=cards.length;
+
+  function render(){
+    var n=0;
+    boxes.forEach(function(b){
+      var d=!!state.done[b.dataset.done]; b.checked=d; if(d) n++;
+      b.closest(".card").classList.toggle("done",d);
+    });
+    cards.forEach(function(c){
+      var ok=state.perfil==="todos"||c.dataset.perfiles.split(" ").indexOf(state.perfil)>-1;
+      c.classList.toggle("dim",!ok);
+    });
+    chips.forEach(function(c){c.setAttribute("aria-pressed",c.dataset.perfil===state.perfil?"true":"false");});
+    document.getElementById("done").textContent=n;
+    document.getElementById("barfill").style.width=(n/cards.length*100)+"%";
+  }
+  boxes.forEach(function(b){b.addEventListener("change",function(){state.done[b.dataset.done]=b.checked;save();render();});});
+  chips.forEach(function(c){c.addEventListener("click",function(){state.perfil=c.dataset.perfil;save();render();});});
+  render();
+})();
+</script>
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+var dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+mermaid.initialize({ startOnLoad: true, theme: dark ? "dark" : "default" });
+</script>
+</body>
+</html>

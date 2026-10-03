@@ -24,6 +24,8 @@ Cada tema tiene:
 ├── ppts/          # presentaciones: abre el .html en el navegador (el .md es la fuente)
 ├── notebooks/     # demo_viernes_*.ipynb y plantilla_sabado_*.ipynb por tema
 ├── data/          # datasets de cada tema (ver data/README.md)
+├── HOJA_DE_RUTA.md            # qué estudiar después del curso (cursos y recursos)
+├── hoja-de-ruta/              # misma ruta en versión interactiva (abrir el .html)
 ├── INSTRUCCIONES_ENTREGA.md   # cómo nombrar y subir tus laboratorios
 └── requirements.txt
 ```
@@ -50,6 +52,11 @@ resultados.
 
 Lee `INSTRUCCIONES_ENTREGA.md`: copia la plantilla, renómbrala con el formato
 indicado y súbela a la carpeta de Drive del curso.
+
+## ¿Y después del curso?
+
+Consulta la [hoja de ruta](HOJA_DE_RUTA.md): probabilidad, inferencia, MLflow, Databricks, series de
+tiempo, deep learning y más, con recursos y un mini-proyecto por tema.
 
 ## Referencia
 
