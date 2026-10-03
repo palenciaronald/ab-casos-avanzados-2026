@@ -10,7 +10,6 @@ viernes, **basada en el libro *An Introduction to Statistical Learning* (ISL)**
 | 1 · Clasificación | `01-clasificacion/teoria_clasificacion.md` | caps. 2, 4, 8 |
 | 2 · Clusterización | `02-clusterizacion/teoria_clusterizacion.md` | cap. 12 |
 | 3 · Regresión | `03-regresion/teoria_regresion.md` | caps. 3, 6 |
-| 4 · NLP (sentimientos) | `04-nlp/teoria_nlp_sentimientos.md` | cap. 4 (marco) |
 
 ## Formato
 

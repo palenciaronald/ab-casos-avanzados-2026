@@ -1,10 +1,8 @@
 # Datasets del curso — resumen por tema
 
-> **Nota:** los 8 datasets (~43 MB) **están versionados en este repo**, así que
-> al clonar ya tienes todo listo para ejecutar los notebooks. Alternativamente,
-> puedes regenerarlos con `bash scripts/download_data.sh` (requiere `kaggle.json`)
-> o descargarlos manualmente desde los enlaces de cada tema. Son datasets de
-> Kaggle: revisa sus licencias antes de redistribuirlos.
+> **Nota:** los datasets **están versionados en este repo**, así que
+> al clonar ya tienes todo listo para ejecutar los notebooks. Son datasets de
+> Kaggle (enlaces en cada tema).
 
 ## Cómo funcionan las "dos bases por tema" (no son train/test)
 
@@ -108,30 +106,6 @@ para que el estudiante aplique con fricción real lo que vio en la demo
 
 ---
 
-## Tema 4 — NLP (clasificar sentimiento de texto)
-
-### Viernes · `data/04-nlp/financial_phrasebank.csv`
-- **Filas × columnas:** 2264 × 2.
-- **Problema:** clasificar el sentimiento (positivo / neutral / negativo) de
-  frases de noticias financieras. Clasificación multiclase de texto.
-- **Columnas:** `Sentence`, `Sentiment`.
-- **Notas:** benchmark clásico, limpio. Se generó a partir de la versión
-  **AllAgree** del Financial PhraseBank (frases con consenso total de
-  anotadores). Existe una versión mayor (~4840 frases, "50Agree") si se
-  prefiere más volumen.
-
-### Sábado · `data/04-nlp/financial_sentiment.csv`
-- **Filas × columnas:** 5842 × 2.
-- **Problema:** mismo objetivo, combinando **FiQA + Financial PhraseBank**
-  (noticias + foros financieros).
-- **Columnas:** `Sentence`, `Sentiment`.
-- **Notas:** más grande y con más variedad de estilo (incluye jerga de foros y
-  tickers tipo `$ESI`), lo que da más textura al ejercicio.
-
-**Diferencia clave:** benchmark limpio de noticias (viernes) → más volumen y estilos mixtos noticia+foro (sábado).
-
----
-
 ## Tabla resumen
 
 | Tema | Rol | Archivo | Filas | Cols | Target | Tipo de problema |
@@ -142,5 +116,3 @@ para que el estudiante aplique con fricción real lo que vio en la demo
 | 2 Clusterización | Sábado | CC_GENERAL.csv | 8 950 | 18 | — | No supervisado |
 | 3 Regresión | Viernes | financial_statements.csv | 161 | 23 | `Current Ratio` | Regresión |
 | 3 Regresión | Sábado | taiwan_bankruptcy.csv | 6 819 | 96 | `Current Ratio` | Regresión |
-| 4 NLP | Viernes | financial_phrasebank.csv | 2 264 | 2 | `Sentiment` | Multiclase (texto) |
-| 4 NLP | Sábado | financial_sentiment.csv | 5 842 | 2 | `Sentiment` | Multiclase (texto) |

@@ -3,7 +3,7 @@ marp: true
 theme: default
 paginate: true
 header: "Casos Avanzados · Maestría en Ingeniería Analítica"
-footer: "Tema 3 — Regresión · clase teórica (~2 h) · basado en *ISL* caps. 3, 6 y 8"
+footer: "Tema 3 — Regresión · clase teórica (~2.5 h) · basado en *ISL* caps. 3, 6 y 8"
 ---
 
 <!-- _class: lead -->
@@ -12,10 +12,55 @@ footer: "Tema 3 — Regresión · clase teórica (~2 h) · basado en *ISL* caps.
 # Regresión
 ## Una investigación: ¿qué modelo predice mejor la liquidez?
 
-**Fin de semana 3 · Viernes · Clase teórica (~2 h)**
+**Fin de semana 3 · Viernes · Clase teórica (~2.5 h)**
 
 *Basado en An Introduction to Statistical Learning (ISL)*
 Cap. 3 — Linear Regression · Cap. 6 — Regularization · Cap. 8 — Tree-Based Methods
+
+---
+
+# Repaso 1/3 — Clasificación (FDS 1)
+
+**Pregunta:** ¿a qué **categoría** pertenece cada caso? ($Y$ categórica)
+*Caso:* score de riesgo crediticio (German Credit → Credit Score).
+
+- **Ideas base del curso:** aprendizaje supervisado, **train/test**,
+  **sobreajuste** y el balance **sesgo–varianza**.
+- **Modelos:** regresión logística, árbol de decisión, Random Forest.
+- **Métricas:** matriz de confusión, precision / recall / F1, **ROC-AUC**.
+- **Lección:** el *accuracy* engaña con clases desbalanceadas; en banca,
+  **interpretar** el modelo importa tanto como acertar.
+
+---
+
+# Repaso 2/3 — Clusterización (FDS 2)
+
+**Pregunta:** ¿qué **grupos** naturales hay? (**sin** respuesta correcta: aprendizaje
+*no supervisado*). *Caso:* segmentación de clientes (Mall Customers → Credit Card).
+
+- **Algoritmos:** **K-Means**, clustering **jerárquico** (dendrograma) y **DBSCAN**
+  (formas arbitrarias + detección de ruido).
+- **¿Cuántos grupos?** Codo, **silhouette**, Davies-Bouldin, Calinski-Harabasz.
+- **Imprescindible:** **escalar** antes de medir distancias; **PCA** para
+  visualizar en 2D; **perfilar** cada cluster en lenguaje de negocio.
+- **Lección:** sin etiqueta no hay "accuracy" — se valida con métricas **y**
+  con sentido de negocio.
+
+---
+
+# Repaso 3/3 — Regresión (FDS 3, hoy)
+
+**Pregunta:** ¿**cuánto** vale? ($Y$ continua). *Caso:* liquidez (Current Ratio).
+
+- **Camino de hoy:** modelo lineal → **diagnóstico** (residuos, VIF, sesgo vs.
+  varianza) → **Ridge/Lasso** → **Árbol, Random Forest, XGBoost**.
+- **Métricas e interpretación:** MAE, RMSE, $R^2$, MAPE; coeficientes vs.
+  importancia de variables, **PDP**.
+- **Lección:** lo lineal **no siempre alcanza**; compara familias de modelos
+  y vigila la **fuga de información**.
+
+> **Hilo común:** datos → EDA → dividir → modelar → **evaluar bien** →
+> interpretar. Hoy sumamos **validación cruzada** e **hiperparámetros** (Acto 7).
 
 ---
 
@@ -114,6 +159,10 @@ sesgo vs. varianza.
 **Acto 5 — El giro**: árboles, Random Forest, XGBoost.
 **Acto 6 — El costo del giro**: coeficientes vs. importancia de variables,
 y cómo recuperar interpretabilidad con un *Partial Dependence Plot*.
+**Acto 7 — Evaluar y afinar con rigor**: validación cruzada e
+hiperparámetros (ISL cap. 5 y §6.2).
+**Cierre — Hacia dónde vamos**: lo que no cubrimos (ensambles avanzados,
+deep learning, RL) y cómo llevar modelos a producción (MLflow).
 
 ---
 
@@ -377,7 +426,7 @@ ISL §6.2 — el hiperparámetro $\lambda$ controla la fuerza de la penalizació
 
 - $\lambda = 0$ → OLS (sin regularizar).
 - $\lambda \to \infty$ → todos los coeficientes hacia 0.
-- Se elige por **validación cruzada**.
+- Se elige por **validación cruzada** (la explicamos a fondo en el Acto 7).
 
 > Importante: **escalar** los predictores antes de Ridge/Lasso — la
 > penalización depende de la escala.
@@ -621,6 +670,125 @@ importante de todas.*
 
 ---
 
+<!-- _class: lead -->
+# Acto 7
+## Evaluar y afinar con rigor: validación cruzada e hiperparámetros
+
+---
+
+# El problema de un solo split train/test
+
+Hasta ahora evaluamos con **un único** corte: 75% train / 25% test.
+
+- Con 137 empresas, el test tiene **~35 filas**: el resultado depende de
+  **qué filas cayeron ahí**. Otra semilla → otro $R^2$.
+- ¿La diferencia entre dos modelos es **real** o es **suerte del corte**?
+- Además, si usamos el test para **decidir** (qué $\lambda$, qué modelo), el
+  test deja de ser independiente.
+
+> Necesitamos una forma de **estimar el error con menos azar** sin gastar el
+> test. Esa herramienta es la **validación cruzada** (ISL §5.1).
+
+---
+
+# Validación cruzada de k pliegues (k-fold CV)
+
+![width:760px center](img/kfold_esquema.png)
+
+$$CV_{(k)} = \frac{1}{k}\sum_{i=1}^{k} \text{Error}_i$$
+
+1. Parte el **train** en $k$ pliegues del mismo tamaño.
+2. Entrena con $k-1$ y valida en el pliegue restante; repite $k$ veces.
+3. Promedia los $k$ errores. **Todas** las filas se usan para validar una vez.
+
+---
+
+# Validación cruzada — cómo se usa bien
+
+- **¿Qué $k$?** Lo habitual es **5 o 10** (ISL §5.1.4): buen equilibrio entre
+  sesgo y varianza de la estimación y costo de cómputo. *LOOCV* ($k=n$) es
+  carísimo y no suele mejorar.
+- **Reporta media ± desviación.** Un modelo con RMSE medio bajo pero
+  desviación alta es **inestable**.
+- **Compara modelos con los mismos pliegues** (`KFold(..., random_state=semilla)`).
+- **Clasificación:** usa pliegues **estratificados** (misma proporción de clases).
+- **Datos en el tiempo** (estados financieros por año): no mezcles el futuro
+  con el pasado → `TimeSeriesSplit`.
+
+---
+
+# Validación cruzada en código
+
+```python
+kf = KFold(n_splits=5, shuffle=True, random_state=cedula)
+s = -cross_val_score(pipe, X_train, y_train, cv=kf,
+                     scoring="neg_root_mean_squared_error")
+print(f"RMSE = {s.mean():.3f} ± {s.std():.3f}")
+```
+
+⚠️ **El preprocesamiento va DENTRO del `Pipeline`.** Si escalas o winsorizas
+*antes* de dividir, la información del pliegue de validación se **filtra** al
+entrenamiento y el error de CV sale demasiado optimista. Con un `Pipeline`,
+`cross_val_score` reajusta el escalado **en cada pliegue**.
+
+> Resultado típico: `RMSE = 0.0015 ± 0.0003` → el ± te dice **cuánto confiar**
+> en la diferencia entre dos modelos.
+
+---
+
+# Parámetros vs. hiperparámetros
+
+| | **Parámetros** | **Hiperparámetros** |
+|---|---|---|
+| ¿Quién los fija? | El algoritmo, **aprendiendo de los datos** | **Tú**, antes de entrenar |
+| Ejemplos | coeficientes $\beta$, cortes de un árbol | $\lambda$ (Ridge/Lasso), `max_depth`, `n_estimators`, `learning_rate` |
+| ¿Cómo se eligen? | Minimizando el error de entrenamiento | **Validación cruzada** (no se pueden aprender del train solo) |
+
+Ya hemos tocado hiperparámetros sin nombrarlos: **$\lambda$** en Ridge/Lasso y
+la **profundidad** del árbol. Controlan el **sesgo vs. varianza**:
+
+- Modelo muy flexible (árbol profundo, $\lambda$ pequeño) → **varianza alta**.
+- Modelo muy rígido (árbol corto, $\lambda$ grande) → **sesgo alto**.
+
+> Afinarlos = buscar el punto donde el error de **validación** es mínimo.
+
+---
+
+# Optimización de hiperparámetros: cómo buscar
+
+- **Grid Search:** prueba **todas** las combinaciones. Exhaustivo pero
+  **explota**: 3×3×3 = 27 combinaciones × 5 folds = **135 entrenamientos**.
+- **Random Search:** prueba $n$ combinaciones **al azar**. Con el mismo
+  presupuesto explora más valores de los que **sí** importan (Bergstra &
+  Bengio, 2012). Es el punto de partida recomendado.
+- **Búsqueda bayesiana** (Optuna): usa los resultados previos para decidir qué
+  probar después. Siguiente paso natural.
+
+```python
+busq = RandomizedSearchCV(pipe, espacio, n_iter=15, cv=3,
+                          scoring="neg_root_mean_squared_error",
+                          random_state=cedula).fit(X_train, y_train)
+```
+
+---
+
+# El protocolo correcto
+
+![width:780px center](img/protocolo_split.png)
+
+- **Toda** la selección (CV + búsqueda de hiperparámetros) ocurre **solo con
+  el train**.
+- El **test se toca una sola vez**, al final, para reportar el desempeño.
+- Si ajustas contra el test, terminas **sobreajustando al test** y tu
+  estimación será optimista.
+- Para comparar de forma muy rigurosa existe la **CV anidada** (la búsqueda
+  de hiperparámetros dentro de cada pliegue externo).
+
+> **En el taller del sábado** lo aplicas: CV de los 6 modelos, `RandomizedSearchCV`
+> sobre XGBoost, y recién después el test.
+
+---
+
 # Trampas comunes ⚠️
 
 - Reportar $R^2$ sin revisar los **residuos** ni el **train vs. test**.
@@ -633,6 +801,9 @@ importante de todas.*
   lineales** — la diferencia puede ser enorme.
 - Usar árboles/XGBoost con **muy pocos datos** y esperar que generalicen
   igual de bien que con datasets grandes.
+- **Ajustar hiperparámetros contra el test**, o decidir con un solo split
+  sin validación cruzada.
+- Escalar o winsorizar **antes** de dividir/validar (filtración de información).
 - Comparar RMSE de una familia contra R² de otra en vez de las mismas
   métricas para todos los modelos.
 - Leer un PDP como si las variables fueran independientes — con predictores
@@ -652,10 +823,100 @@ MAE, RMSE, R², MAPE) → Coeficientes vs. importancia de variables**
 
 - **Hoy (demo):** Financial Statements — 161 empresas. Ya conoces el final:
   los árboles ganan por mucho.
-- **Sábado (tú):** Taiwan Bankruptcy — 6.819 empresas, 95 ratios. Pregunta
-  abierta: con 36× más datos, ¿la ventaja de los árboles se mantiene, crece,
-  o se reduce? Vas a excluir variables casi-duplicadas del target y domar
-  la colinealidad tú mismo.
+- **Sábado (tú, ~4 h):** Taiwan Bankruptcy — 6.819 empresas, 95 ratios. Haces
+  **tú mismo el EDA** (outliers, redundancia, fuga de información), validación
+  cruzada, ajuste de hiperparámetros, VIF e interpretación. Pregunta abierta:
+  con ~40× más datos, ¿la ventaja de los árboles se mantiene, crece o se reduce?
+
+---
+
+<!-- _class: lead -->
+# Cierre
+## Hacia dónde vamos después de este curso
+
+---
+
+# Lo que vimos… y lo que quedó por fuera
+
+Este curso cubrió el **aprendizaje supervisado y no supervisado clásico** sobre
+datos tabulares. El campo es mucho más grande (y de aquí salen tus próximos pasos):
+
+| Tema | Qué es | Por qué importa en finanzas |
+|---|---|---|
+| **Ensambles avanzados** | *Stacking*, LightGBM, CatBoost (evolución de RF/XGBoost) | Mejor desempeño en datos tabulares |
+| **Deep learning** | MLP, CNN, LSTM, **Transformers** | Texto (FinBERT), series, documentos; en tablas **no siempre** supera a XGBoost |
+| **Refuerzo (RL)** | Un agente aprende **actuando** y recibiendo recompensas | Ejecución de órdenes, portafolios, *pricing* |
+
+> Todo esto **se apoya en lo que ya sabes**: train/test, sesgo–varianza,
+> validación cruzada y evaluación honesta.
+
+---
+
+# Lo que nos hizo falta (y tú puedes profundizar)
+
+- **Series de tiempo** (ARIMA, validación temporal) y **explicabilidad**
+  (SHAP, LIME): exigencia regulatoria en crédito.
+- **Validación fuera de tiempo** (*out-of-time*): en finanzas el futuro no se
+  parece al pasado; un split aleatorio es optimista.
+- **Costos de error asimétricos** y **calibración** de probabilidades.
+- **Ingeniería de variables** y manejo de faltantes más allá de la mediana.
+- **Sesgo y equidad** (*fairness*) en modelos de crédito.
+- **Causalidad:** predecir ≠ explicar qué *causa* qué.
+- **Monitoreo:** los modelos se **degradan** cuando los datos cambian
+  (*data drift*, *concept drift*).
+
+---
+
+# De notebook a producción: MLflow
+
+En el taller probaste **7 modelos** y varios hiperparámetros: ¿cómo recuerdas
+cuál dio qué, con qué datos y con qué semilla?
+
+**MLflow** es una herramienta abierta para el ciclo de vida del modelo:
+
+- **Tracking:** registra parámetros, métricas y artefactos de **cada corrida**,
+  con una interfaz web para compararlas.
+- **Model Registry:** versiona el modelo (staging / producción) → reproducible.
+
+```python
+import mlflow
+mlflow.set_experiment("liquidez-regresion")
+with mlflow.start_run(run_name="xgb_tuned"):
+    mlflow.log_params(busq.best_params_)
+    mlflow.log_metric("rmse_test", rmse)
+    mlflow.sklearn.log_model(modelo, "model")
+# Interfaz:  mlflow ui  →  http://localhost:5000
+```
+
+---
+
+# El ciclo completo de un modelo (MLOps)
+
+1. **Datos:** versionado (DVC), validación de calidad.
+2. **Experimentos:** *tracking* con **MLflow**, búsqueda de hiperparámetros (Optuna).
+3. **Empaquetado:** `Pipeline` reproducible, `requirements.txt`, contenedor (Docker).
+4. **Despliegue:** API (FastAPI) o *batch*; integración con sistemas del banco.
+5. **Monitoreo:** *drift*, desempeño en producción, alertas y **reentrenamiento**.
+6. **Gobierno:** documentación, auditoría y **riesgo de modelo** (en banca, p. ej. SR 11-7).
+
+> Un modelo que no se puede **reproducir, monitorear y explicar** no está
+> terminado, por bueno que sea su $R^2$.
+
+---
+
+# Una ruta sugerida
+
+| Plazo | Qué estudiar | Recurso |
+|---|---|---|
+| **Corto** (1–3 meses) | LightGBM/CatBoost, Optuna, SHAP, **MLflow** | Documentación oficial de cada herramienta |
+| **Mediano** (3–9 meses) | Series de tiempo, **deep learning** con PyTorch, NLP con *transformers* (FinBERT) | *Dive into Deep Learning* (d2l.ai); *Hands-On Machine Learning* (Géron) |
+| **Largo** (9+ meses) | **Aprendizaje por refuerzo**, inferencia causal, MLOps completo | Sutton & Barto, *Reinforcement Learning*; *Designing Machine Learning Systems* (Huyen) |
+
+Y para consolidar lo de este curso: *An Introduction to Statistical Learning
+with Applications in Python* (ISLP) — la versión con laboratorios en Python.
+
+**El próximo fin de semana (NLP)** da el primer paso hacia el texto, el puente
+natural hacia *deep learning* y los *transformers*.
 
 ---
 
