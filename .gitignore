@@ -47,3 +47,10 @@ material-instructor/
 data/04-nlp/
 notebooks/04-nlp/
 ppts/04-nlp/
+
+# Trabajos de estudiantes (datos personales) — NUNCA versionar
+laboratorios_resueltos_estudiantes/
+laboratorios_resueltos_estudiantes.zip
+
+# Documentos personales/contractuales — NUNCA versionar
+contrato/
