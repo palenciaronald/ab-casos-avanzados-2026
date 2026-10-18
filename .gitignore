@@ -54,3 +54,12 @@ laboratorios_resueltos_estudiantes.zip
 
 # Documentos personales/contractuales — NUNCA versionar
 contrato/
+
+.databricks
+# Material de referencia de otra persona (curso de IA previo) — solo local
+curso_Leo_IA/
+
+# Herramientas locales: Spec Kit, agente y Databricks
+.claude/
+.specify/
+databricks.yml
