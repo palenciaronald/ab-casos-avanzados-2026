@@ -1,0 +1,23 @@
+# Curso v2 — Laboratorios de Casos Avanzados (2026)
+# Python 3.12. Instalar con:  uv pip install -r requirements.txt
+# Versiones fijadas con el entorno probado del instructor (Streamlit Community Cloud lee este archivo).
+
+pandas==3.0.6
+numpy==2.5.4
+scipy==1.18.1
+scikit-learn==1.9.1
+matplotlib==3.11.2
+seaborn==0.13.2
+xgboost==3.4.1
+lightgbm==4.7.0
+optuna==5.0.0
+shap==0.54.1
+mlflow==3.17.1
+databricks-sdk==0.153.0
+python-dotenv==1.2.4
+streamlit==1.66.0
+joblib==1.6.0
+pytest==9.1.1
+nbconvert==7.17.2
+nbformat==5.11.1
+ipykernel==7.4.0

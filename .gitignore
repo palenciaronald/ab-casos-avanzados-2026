@@ -63,3 +63,19 @@ curso_Leo_IA/
 .claude/
 .specify/
 databricks.yml
+
+# Credenciales locales — NUNCA versionar
+.env
+.venv/
+
+# Entorno y salidas de verify_stage
+.verify-venv/
+.verify-out/
+
+# Datos procesados del ejemplo (se regeneran con el notebook 03)
+ejemplo/data_processed/
+
+# MLflow local de respaldo y salidas generadas
+ejemplo/mlflow_local.db
+mlruns/
+ejemplo/mlruns/
