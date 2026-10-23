@@ -1,6 +1,6 @@
 # Especificación del proyecto — CreditSight (ejemplo de referencia)
 
-> **Esta es la plantilla `material-del-curso/kit/especificacion-proyecto.md` ya diligenciada** para el
+> **Esta es la plantilla `especificacion-proyecto.md` ya diligenciada** para el
 > ejemplo del instructor. Úsenla como modelo del nivel de detalle esperado. Claude la lee antes de
 > generar código: lo que está aquí manda sobre cualquier otra suposición.
 

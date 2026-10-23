@@ -133,13 +133,14 @@ tus datos no se borran, pero no puedes seguir registrando hasta que se renueven.
 
 El proyecto **no se detiene**: el módulo `material-del-curso/ejemplo-creditsight/src/creditsight/tracking/mlflow_utils.py` intenta
 conectarse a Databricks y, si no puede, **cae solo a un MLflow local** que guarda todo en una base
-SQLite (`material-del-curso/ejemplo-creditsight/mlflow_local.db`). Tus notebooks corren igual y verás en pantalla que quedó en
-`local`.
+SQLite: `mlflow_local.db` en la **raíz de tu repo** (el ejemplo lo guarda junto a su código). Tus
+notebooks corren igual y verás en pantalla que quedó en `local`. Ese archivo está en `.gitignore`
+y no se sube.
 
-Para ver ese MLflow local, desde la raíz del repo:
+Para ver ese MLflow local, desde la raíz de tu repo:
 
 ```bash
-mlflow ui --backend-store-uri sqlite:///ejemplo/mlflow_local.db
+mlflow ui --backend-store-uri sqlite:///mlflow_local.db
 ```
 
 Abre en el navegador la dirección que imprime (normalmente `http://127.0.0.1:5000`). La interfaz es
