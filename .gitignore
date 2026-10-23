@@ -1,0 +1,22 @@
+# Credenciales: NUNCA se suben
+.env
+kaggle.json
+
+# Entornos y cachés
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Datos originales y con datos personales: no se suben al repo público
+# (quita esta línea solo si la licencia lo permite y no hay datos personales)
+data/raw/*
+!data/raw/.gitkeep
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
